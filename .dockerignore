@@ -1,6 +1,9 @@
 .git
 .env
-node_modules
-dist
+__pycache__
+*.pyc
+.venv
 data
 *.log
+node_modules
+dist

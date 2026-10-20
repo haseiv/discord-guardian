@@ -1,15 +1,13 @@
-FROM node:24-slim
+FROM python:3.12-slim
 
 WORKDIR /usr/src/app
 
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY tsconfig.json ./
+COPY main.py store.py security.py panels.py ./
 COPY src ./src
-RUN npm run build && npm prune --omit=dev
 
-ENV NODE_ENV=production
 ENV DATA_FILE=/app/data/state.json
 
-CMD ["node", "dist/index.js"]
+CMD ["python", "main.py"]
