@@ -16,13 +16,21 @@ Discord-бот на TypeScript с защитой сервера, тикетам�
 
 Нужен Node.js 22 или новее. Создайте приложение и бота в [Discord Developer Portal](https://discord.com/developers/applications). В разделе **Bot** включите привилегированный intent **Server Members Intent**. **Message Content Intent не требуется**.
 
-1. Скопируйте `.env.example` в `.env` и заполните `DISCORD_TOKEN` и `DISCORD_CLIENT_ID`. Для тестового сервера можно указать `DISCORD_DEV_GUILD_ID`, чтобы команды появились сразу. Не публикуйте `.env`.
+1. Скопируйте `.env.example` в `.env` и заполните `DISCORD_TOKEN`. ID приложения бот определит после входа; `DISCORD_CLIENT_ID` можно указать явно. Для тестового сервера можно указать `DISCORD_DEV_GUILD_ID`, чтобы команды появились сразу. Не публикуйте `.env`.
 2. Установите зависимости: `npm ci`.
 3. Проверьте проект: `npm run check`.
 4. Запустите: `npm run build && npm start`.
 5. Пригласите бота через OAuth2 URL Generator со scope `bot` и `applications.commands`. Права: **View Audit Log, Manage Channels, Manage Roles, Moderate Members, Ban Members, Kick Members, Move Members, View Channels, Send Messages, Read Message History, Embed Links, Attach Files**. Разместите роль бота выше ролей, которые он должен снимать. Выдавайте только необходимые права для включённых функций.
 
 Данные настроек хранятся в `data/state.json`. Сохраняйте этот файл при переносе или обновлении бота. Запускайте только один экземпляр, использующий один файл данных.
+
+## Запуск на Bothost
+
+Этот бот написан на **TypeScript/Node.js**. Ошибка `SyntaxError: invalid syntax` в `/app/src/autorole.ts` означает, что Bothost запускает `.ts` через Python. В настройках бота выберите **Node.js** и в «Дополнительных настройках» включите **«Использовать собственный Dockerfile»**. Dockerfile в корне репозитория устанавливает зависимости, собирает TypeScript и запускает `dist/index.js`. После изменения настроек выполните **новый деплой**, одного перезапуска может быть недостаточно.
+
+Для Discord-бота Bothost предоставляет переменную `DISCORD_BOT_TOKEN`; проект её поддерживает. Если токен не появляется автоматически, задайте `DISCORD_TOKEN` в разделе «Переменные окружения». `DISCORD_CLIENT_ID` можно не задавать. Настройки сервера сохраняются в `/app/data/state.json`, чтобы они переживали обновление образа.
+
+Не указывайте `src/autorole.ts` в поле «Главный файл»: TypeScript сначала должен быть собран. При включённом собственном Dockerfile запуск задаёт `CMD` из него. См. [документацию Bothost о Dockerfile](https://bothost.ru/docs/custom-dockerfile), [точке входа](https://bothost.ru/docs/main-file-entrypoint) и [переменных окружения](https://bothost.ru/docs/environment-variables).
 
 ## Настройка в Discord
 
