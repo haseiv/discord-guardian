@@ -28,4 +28,20 @@ export const commands = [
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addSubcommand(s => s.setName('text').setDescription('Обычное сообщение').addChannelOption(o => o.setName('channel').setDescription('Текстовый канал').addChannelTypes(ChannelType.GuildText).setRequired(true)).addStringOption(o => o.setName('content').setDescription('Текст до 2000 символов').setMaxLength(2000).setRequired(true)))
     .addSubcommand(s => s.setName('embed').setDescription('Эмбед сообщение').addChannelOption(o => o.setName('channel').setDescription('Текстовый канал').addChannelTypes(ChannelType.GuildText).setRequired(true)).addStringOption(o => o.setName('title').setDescription('Заголовок').setMaxLength(256).setRequired(true)).addStringOption(o => o.setName('description').setDescription('Текст').setMaxLength(4000).setRequired(true)).addStringOption(o => o.setName('color').setDescription('Цвет #RRGGBB')).addStringOption(o => o.setName('image').setDescription('URL картинки'))),
+  new SlashCommandBuilder().setName('reaction-role').setDescription('Роли по реакциям на сообщение')
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
+    .addSubcommand(s => s.setName('create').setDescription('Создать сообщение с ролью по эмодзи')
+      .addChannelOption(o => o.setName('channel').setDescription('Текстовый канал').addChannelTypes(ChannelType.GuildText).setRequired(true))
+      .addStringOption(o => o.setName('text').setDescription('Текст сообщения').setMaxLength(1200).setRequired(true))
+      .addStringOption(o => o.setName('emoji').setDescription('Эмодзи или <:name:id>').setMaxLength(100).setRequired(true))
+      .addRoleOption(o => o.setName('role').setDescription('Выдаваемая роль').setRequired(true)))
+    .addSubcommand(s => s.setName('add').setDescription('Добавить эмодзи и роль к сообщению')
+      .addStringOption(o => o.setName('message_id').setDescription('ID созданного сообщения').setRequired(true))
+      .addStringOption(o => o.setName('emoji').setDescription('Эмодзи или <:name:id>').setMaxLength(100).setRequired(true))
+      .addRoleOption(o => o.setName('role').setDescription('Выдаваемая роль').setRequired(true)))
+    .addSubcommand(s => s.setName('remove').setDescription('Убрать привязку эмодзи')
+      .addStringOption(o => o.setName('message_id').setDescription('ID созданного сообщения').setRequired(true))
+      .addStringOption(o => o.setName('emoji').setDescription('Эмодзи или <:name:id>').setMaxLength(100).setRequired(true)))
+    .addSubcommand(s => s.setName('list').setDescription('Показать роли на сообщении')
+      .addStringOption(o => o.setName('message_id').setDescription('ID созданного сообщения').setRequired(true))),
 ].map(command => command.toJSON());

@@ -1,9 +1,10 @@
 import 'dotenv/config';
-import { Client, Events, GatewayIntentBits, REST, Routes } from 'discord.js';
+import { Client, Events, GatewayIntentBits, Partials, REST, Routes } from 'discord.js';
 import { commands } from './commands.js';
 import { installInteractions } from './interactions.js';
 import { installRooms } from './rooms.js';
 import { installSecurity } from './security.js';
+import { installReactionRoles } from './reaction-roles.js';
 
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.DISCORD_CLIENT_ID;
@@ -14,12 +15,14 @@ const client = new Client({ intents: [
   GatewayIntentBits.GuildMembers,
   GatewayIntentBits.GuildModeration,
   GatewayIntentBits.GuildMessages,
+  GatewayIntentBits.GuildMessageReactions,
   GatewayIntentBits.GuildVoiceStates,
-] });
+], partials: [Partials.Message, Partials.Channel, Partials.Reaction] });
 
 installSecurity(client);
 installInteractions(client);
 installRooms(client);
+installReactionRoles(client);
 client.once(Events.ClientReady, ready => console.log(`Guardian online as ${ready.user.tag}`));
 client.on(Events.Error, console.error);
 
