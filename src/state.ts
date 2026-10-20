@@ -4,6 +4,7 @@ import { dirname, resolve } from 'node:path';
 export type Sanction = 'ban' | 'kick' | 'strip';
 export interface GuildConfig {
   logChannelId?: string;
+  autoroleRoleId?: string;
   trustedIds: string[];
   security: {
     enabled: boolean;

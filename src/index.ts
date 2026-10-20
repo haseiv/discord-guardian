@@ -4,6 +4,7 @@ import { commands } from './commands.js';
 import { installInteractions } from './interactions.js';
 import { installRooms } from './rooms.js';
 import { installSecurity } from './security.js';
+import { installAutorole } from './autorole.js';
 
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.DISCORD_CLIENT_ID;
@@ -18,6 +19,7 @@ const client = new Client({ intents: [
 ] });
 
 installSecurity(client);
+installAutorole(client);
 installInteractions(client);
 installRooms(client);
 client.once(Events.ClientReady, ready => console.log(`Guardian online as ${ready.user.tag}`));
