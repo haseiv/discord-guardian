@@ -23,11 +23,10 @@ export interface GuildConfig {
 }
 export interface Ticket { guildId: string; channelId: string; openerId: string; createdAt: number; }
 export interface Room { guildId: string; channelId: string; ownerId: string; createdAt: number; }
-export interface ReactionRoleMessage { guildId: string; channelId: string; messageId: string; text: string; roles: Record<string, { roleId: string; emoji: string }>; }
-interface State { guilds: Record<string, GuildConfig>; tickets: Record<string, Ticket>; rooms: Record<string, Room>; reactionRoles: Record<string, ReactionRoleMessage>; }
+interface State { guilds: Record<string, GuildConfig>; tickets: Record<string, Ticket>; rooms: Record<string, Room>; }
 
 const file = resolve(process.env.DATA_FILE || './data/state.json');
-const empty = (): State => ({ guilds: {}, tickets: {}, rooms: {}, reactionRoles: {} });
+const empty = (): State => ({ guilds: {}, tickets: {}, rooms: {} });
 let state: State = empty();
 if (existsSync(file)) {
   state = { ...empty(), ...JSON.parse(readFileSync(file, 'utf8')) };
@@ -69,6 +68,3 @@ export function rooms(): Room[] { return Object.values(state.rooms); }
 export function putRoom(value: Room): void { state.rooms[value.channelId] = value; save(); }
 export function updateRoom(id: string, fn: (value: Room) => void): void { const value = room(id); if (value) { fn(value); save(); } }
 export function deleteRoom(id: string): void { delete state.rooms[id]; save(); }
-export function reactionRoleMessage(id: string): ReactionRoleMessage | undefined { return state.reactionRoles[id]; }
-export function putReactionRoleMessage(value: ReactionRoleMessage): void { state.reactionRoles[value.messageId] = value; save(); }
-export function deleteReactionRoleMessage(id: string): void { delete state.reactionRoles[id]; save(); }

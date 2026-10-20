@@ -5,7 +5,6 @@ import {
   TextInputStyle, TextChannel, VoiceChannel,
 } from 'discord.js';
 import { deleteRoom, deleteTicket, guildConfig, putTicket, room, rooms, ticket, tickets, updateGuild, updateRoom } from './state.js';
-import { reactionRoleCommand } from './reaction-roles.js';
 
 const privateReply = { flags: MessageFlags.Ephemeral } as const;
 const ticketLocks = new Set<string>();
@@ -32,7 +31,6 @@ async function textChannel(interaction: ChatInputCommandInteraction): Promise<Te
 }
 
 async function command(interaction: ChatInputCommandInteraction): Promise<void> {
-  if (interaction.commandName === 'reaction-role') { await reactionRoleCommand(interaction); return; }
   const guild = interaction.guild;
   if (!guild) { await interaction.reply({ content: 'Команда доступна только на сервере.', ...privateReply }); return; }
   const sub = interaction.options.getSubcommand();
